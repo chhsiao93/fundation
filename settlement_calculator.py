@@ -10,38 +10,61 @@ Author: Foundation Analysis Tool
 
 import math
 import yaml
+import json
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from enum import Enum
 
 
 class SettlementConfig:
     """Configuration class for settlement analysis using the same format as bearing capacity."""
     
-    def __init__(self, config_path: str = "config.yaml"):
+    def __init__(self, config_input: Union[str, Dict] = "config.yaml"):
         """
-        Initialize configuration from YAML file (same as bearing capacity config).
+        Initialize configuration from YAML file, JSON file, or dictionary.
         
         Args:
-            config_path: Path to the YAML configuration file
+            config_input: Path to the YAML/JSON configuration file or a dictionary
         """
-        self.config_path = Path(config_path)
-        self.config = self._load_config()
+        if isinstance(config_input, dict):
+            # Direct dictionary input
+            self.config_path = None
+            self.config = config_input
+        else:
+            # File path input
+            self.config_path = Path(config_input)
+            self.config = self._load_config()
         self._validate_config()
     
     def _load_config(self) -> Dict:
-        """Load configuration from YAML file."""
+        """Load configuration from YAML or JSON file."""
         if not self.config_path.exists():
             raise FileNotFoundError(f"Configuration file not found: {self.config_path}")
         
+        file_extension = self.config_path.suffix.lower()
+        
         try:
             with open(self.config_path, 'r') as file:
-                config = yaml.safe_load(file)
+                if file_extension in ['.yaml', '.yml']:
+                    config = yaml.safe_load(file)
+                elif file_extension == '.json':
+                    config = json.load(file)
+                else:
+                    # Try YAML first, then JSON as fallback
+                    file.seek(0)
+                    content = file.read()
+                    try:
+                        config = yaml.safe_load(content)
+                    except yaml.YAMLError:
+                        try:
+                            config = json.loads(content)
+                        except json.JSONDecodeError:
+                            raise ValueError(f"Unable to parse configuration file as YAML or JSON: {self.config_path}")
                 return config
-        except yaml.YAMLError as e:
-            raise ValueError(f"Error parsing YAML configuration: {e}")
+        except (yaml.YAMLError, json.JSONDecodeError) as e:
+            raise ValueError(f"Error parsing configuration file: {e}")
     
     def _validate_config(self) -> None:
         """Validate the loaded configuration."""
@@ -370,15 +393,16 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python settlement_calculator.py                    # Calculate settlement
-  python settlement_calculator.py -c config.yaml     # Use custom config file
+  python settlement_calculator.py                     # Calculate settlement (default config.yaml)
+  python settlement_calculator.py -c config.yaml     # Use custom YAML config file
+  python settlement_calculator.py -c config.json     # Use custom JSON config file
         """
     )
     
     parser.add_argument(
         '-c', '--config',
         default='config.yaml',
-        help='Path to YAML configuration file (default: config.yaml - same as bearing capacity)'
+        help='Path to YAML or JSON configuration file (default: config.yaml - same as bearing capacity)'
     )
     
     args = parser.parse_args()

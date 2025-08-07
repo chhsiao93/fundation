@@ -29,7 +29,6 @@ loading:
 
 # Analysis Settings
 analysis:
-  method: "both"          # Options: "terzaghi", "meyerhof", "both"
   safety_factor: 3.0      # Factor of safety for allowable capacity (>= 1.0)
 
 # Output Settings

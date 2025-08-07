@@ -1,0 +1,31 @@
+{
+  "soil": {
+    "cohesion": [20.0, 20.0],
+    "friction_angle": [30.0, 30.0],
+    "unit_weight": [18.0, 20.0],
+    "thickness": [2, 15],
+    "gwt": 2.0,
+    "compression_index": [0.3, 0.4],
+    "recompression_index": [0.05, 0.05],
+    "void_ratio": [0.6, 0.8],
+    "ocr": [2.0, 1.0]
+  },
+  "foundation": {
+    "width": 2.0,
+    "length": 2.0,
+    "depth": 1.0
+  },
+  "loading": {
+    "load": 1000.0,
+    "load_angle": 0.0,
+    "eccentricity": 0.0
+  },
+  "analysis": {
+    "safety_factor": 3.0
+  },
+  "output": {
+    "show_factors": true,
+    "show_components": true,
+    "decimal_places": 2
+  }
+}
