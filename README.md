@@ -71,33 +71,58 @@ python settlement_calculator.py
 ### Bearing Capacity Calculation
 ```python
 from bearing_capacity import FoundationConfig, BearingCapacityCalculator
+import json
 
 # Load configuration
-config = FoundationConfig("config.yaml")
+# ==== Direct dictionary input ====
+# config = FoundationConfig(config_dict) 
+# ==== YAML file input ====
+# config = FoundationConfig("config.yaml") 
+# ==== JSON file input ====
+config = FoundationConfig("config.json") 
+
+
 calculator = BearingCapacityCalculator()
 
 # Calculate bearing capacity
-result = calculator.calculate_bearing_capacity(config)
-
-print(f"Ultimate Bearing Capacity: {result['ultimate_capacity']:.1f} kPa")
-print(f"Allowable Bearing Capacity: {result['allowable_capacity']:.1f} kPa")
+result = calculator.calculate_bearing_capacity(
+            cohesion=config.soil_cohesion,
+            unit_weight=config.soil_unit_weight,
+            friction_angle=config.soil_friction_angle,
+            thickness=config.soil_thickness,
+            gwt_depth=config.gwt,
+            width=config.foundation_width,
+            depth=config.foundation_depth,
+            load_angle=config.load_angle,
+            eccentricity=config.eccentricity,
+            length=config.foundation_length
+        )
+print(f"Ultimate Bearing Capacity: {result['ultimate_bearing_capacity']:.1f} kPa")
 ```
 
 ### Settlement Calculation
 ```python
 from settlement_calculator import SettlementConfig, SettlementCalculator
 
-# Load configuration
-config = SettlementConfig("config.yaml")
+config = SettlementConfig(config_dict)
+# config = FoundationConfig("config.yaml")
+# config = SettlementConfig("config.json")
 calculator = SettlementCalculator()
 
 # Calculate settlement
 result = calculator.calculate_consolidation_settlement(
-    applied_load=config.applied_load,
-    unit_weights=config.soil_unit_weight,
-    layer_thicknesses=config.soil_thickness,
-    # ... other parameters
-)
+            applied_load=config.applied_load,
+            unit_weights=config.soil_unit_weight,
+            layer_thicknesses=config.soil_thickness,
+            compression_indices=config.compression_index,
+            recompression_indices=config.recompression_index,
+            void_ratios=config.void_ratio,
+            ocr=config.ocr,
+            gwt_depth=config.gwt_depth,
+            foundation_width=config.foundation_width,
+            foundation_length=config.foundation_length,
+            foundation_depth=config.foundation_depth,
+        )
 
 print(f"Total Settlement: {result['total_settlement']*1000:.1f} mm")
 ```
