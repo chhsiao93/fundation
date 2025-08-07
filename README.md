@@ -4,33 +4,24 @@ A comprehensive Python toolkit for foundation engineering analysis, including be
 
 ## Features
 
-### 🏗️ Bearing Capacity Analysis
+### Bearing Capacity Analysis
 - **Meyerhof's General Equation**: Complete implementation with all bearing capacity factors
 - **Layered Soil Support**: Effective Shear Depth (He) method with iterative convergence
-- **Foundation Types**: Strip, square, circular, and rectangular foundations
-- **Loading Conditions**: Vertical, inclined, and eccentric loads
-- **Groundwater Effects**: Automatic effective stress and buoyancy calculations
+- **Foundation Types**: Only support rectangle shape
+- **Loading Conditions**: Support inclined and eccentric loading
 
-### 📐 Settlement Analysis
+### Settlement Analysis
 - **Consolidation Theory**: Terzaghi's one-dimensional consolidation settlement
 - **Overconsolidated Soils**: OCR-based preconsolidation pressure handling
 - **Layered Analysis**: Layer-by-layer settlement computation
 - **Stress Distribution**: 2:1 method with expandable architecture
 
-### 📊 Visual Tools
-- **Soil Profile Diagrams**: ASCII-based foundation and soil layer visualization
-- **Detailed Output**: Component breakdown and layer-by-layer analysis
-- **Professional Reports**: Comprehensive calculation summaries
 
 ## Installation
 
-### Prerequisites
-- Python 3.7 or higher
-- PyYAML library
-
 ### Setup
 ```bash
-git clone <repository-url>
+git clone https://github.com/chhsiao93/fundation.git
 cd fundation
 pip install -r requirements.txt
 ```
@@ -114,7 +105,9 @@ print(f"Total Settlement: {result['total_settlement']*1000:.1f} mm")
 ## Key Algorithms
 
 ### Bearing Capacity
-- **Meyerhof's Equation**: `qu = c·Nc·sc·dc·ic·ec + σ'·Nq·sq·dq·iq·eq + 0.5·γ'·B·Nγ·sγ·dγ·iγ·eγ`
+- **Meyerhof's Equation**: 
+  - Verticle loading: `qu = c·Nc·sc·dc·ec + σ'·Nq·sq·dq·eq + 0.5·γ'·B·Nγ·sγ·dγ·eγ`
+  - Inclined loading: `qu = c·Nc·ic·dc·ec + σ'·Nq·iq·dq·eq + 0.5·γ'·B·Nγ·iγ·dγ·eγ`
 - **Effective Shear Depth**: Iterative calculation using `He = 0.5·B·tan(45° + φ/2)`
 - **Layered Analysis**: Weighted averaging within shear zone
 

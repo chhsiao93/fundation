@@ -190,7 +190,8 @@ zi, zi+1 = layer boundaries from foundation level
 
 ### 5. Ultimate Bearing Capacity
 ```
-qu = cav·Nc·sc·dc·ic·ec + σ'·Nq·sq·dq·iq·eq + 0.5·γe·B·Nγ·sγ·dγ·iγ·eγ
+- Verticle loading: `qu = c·Nc·sc·dc·ec + σ'·Nq·sq·dq·eq + 0.5·γ'·B·Nγ·sγ·dγ·eγ`
+- Inclined loading: `qu = c·Nc·ic·dc·ec + σ'·Nq·iq·dq·eq + 0.5·γ'·B·Nγ·iγ·dγ·eγ`
 ```
 
 ### 6. Allowable Bearing Capacity
