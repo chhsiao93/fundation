@@ -1,0 +1,39 @@
+# Foundation Bearing Capacity Configuration File
+# This file contains all the input parameters for bearing capacity calculations
+
+# Soil Properties
+soil:
+  cohesion: [20.0, 20.0]          # c, Soil cohesion (kPa)
+  friction_angle: [30.0, 30.0]    # φ, Internal friction angle (degrees, 0-50)
+  unit_weight: [18.0, 20.0]       # γ, Soil unit weight (kN/m³)
+  thickness: [2, 15]               # Soil layer thickness (m)
+  gwt: 2.0                        # GWT, Groundwater table depth (m) - set to null if not applicable
+  
+  # Settlement Analysis Parameters
+  compression_index: [0.3, 0.4]   # Cc, Compression index for each layer
+  recompression_index: [0.05, 0.05] # Cr, Recompression index for each layer
+  void_ratio: [0.6, 0.8]          # e0, Initial void ratio for each layer
+  ocr: [2.0, 1.0]  # Overconsolidation ratio for each layer
+
+# Foundation Geometry
+foundation:
+  width: 2.0              # B, Foundation width (m)
+  length: 2.0            # L, Foundation length (m)
+  depth: 1.0             # Df, Foundation depth (m)
+
+# Loading Conditions
+loading:
+  load: 1000.0              # P, Applied load (kN)
+  load_angle: 0.0         # λ, Load inclination angle (degrees, 0-90) - 0 for vertical load
+  eccentricity: 0.0       # e, Eccentricity of load (m) - set to 0 if concentric
+
+# Analysis Settings
+analysis:
+  method: "both"          # Options: "terzaghi", "meyerhof", "both"
+  safety_factor: 3.0      # Factor of safety for allowable capacity (>= 1.0)
+
+# Output Settings
+output:
+  show_factors: true      # Show bearing capacity factors (Nc, Nq, Nγ)
+  show_components: true   # Show individual capacity components
+  decimal_places: 2       # Number of decimal places in results
